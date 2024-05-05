@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class SlackNotifer {
-  /// Sends a scheduled message
+  ///Schedules a message to be sent to a channel.
   ///
   /// Timestamp is your preferred date in Unix format
   sendScheduledMessage(
@@ -76,6 +76,7 @@ class SlackNotifer {
     return result.body;
   }
 
+  /// 
   postMessage(
       {required String messageText,
       required String token,
@@ -99,6 +100,8 @@ class SlackNotifer {
 
     return result.body;
   }
+
+  /// Deletes a message
   deleteMessage(
       {required String timeStamp,
       required String token,
@@ -117,6 +120,33 @@ class SlackNotifer {
     var request = {
       "channel": channelId,
       "ts": timeStamp,
+      if(asUser != null) "as_user": asUser
+    };
+
+    var result = await http.post(url,
+        body: json.encode(request), headers: requestHeader);
+
+    return result.body;
+  }
+  /// Deletes a pending scheduled message from the queue.
+  deleteScheduledMessage(
+      {required String scheduleMessageId,
+      required String token,
+      required String channelId,
+      bool? asUser
+      }) async {
+    //slack api
+    var url = Uri.parse('https://slack.com/api/chat.deleteScheduledMessage');
+
+    //Makes request headers
+    Map<String, String> requestHeader = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var request = {
+      "channel": channelId,
+      "scheduled_message_id": scheduleMessageId,
       if(asUser != null) "as_user": asUser
     };
 
@@ -154,4 +184,110 @@ class SlackNotifer {
 
     return result.body;
   }
+
+  /// Retrieve a permalink URL for a specific extant message
+  getPermalink(
+      {required String timeStamp,
+      required String token,
+      required String channelId,
+      bool? asUser
+      }) async {
+    //slack api
+    var url = Uri.parse('https://slack.com/api/chat.getPermalink?channel=$channelId&message_ts=$timeStamp');
+
+    //Makes request headers
+    Map<String, String> requestHeader = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var result = await http.get(url,
+       headers: requestHeader);
+
+    return result.body;
+  }
+
+
+   /// Share a me message into a channel.
+  meMessage(
+      {required String messageText,
+      required String token,
+      required String channelId}) async {
+    //slack api
+    var url = Uri.parse('https://slack.com/api/chat.meMessage');
+
+    //Makes request headers
+    Map<String, String> requestHeader = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var request = {
+      "channel": channelId,
+      "text": messageText,
+    };
+
+    var result = await http.post(url,
+        body: json.encode(request), headers: requestHeader);
+
+    return result.body;
+  }
+
+  /// Sends an ephemeral message to a user in a channel.
+  postEphemeral(
+      {required String messageText,
+      required String userId,
+      required String token,
+      required String channelId}) async {
+    //slack api
+    var url = Uri.parse('https://slack.com/api/chat.postEphemeral');
+
+    //Makes request headers
+    Map<String, String> requestHeader = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var request = {
+      "channel": channelId,
+      "text": messageText,
+       "user": userId,
+    
+    };
+
+    var result = await http.post(url,
+        body: json.encode(request), headers: requestHeader);
+
+    return result.body;
+  }
+  /// Provide custom unfurl behavior for user-posted URLs
+  /// 
+  /// Requires links:write scope
+  unfurl(
+      {required String messageText,
+      required String userId,
+      required String token,
+      required String channelId}) async {
+    //slack api
+    var url = Uri.parse('https://slack.com/api/chat.postEphemeral');
+
+    //Makes request headers
+    Map<String, String> requestHeader = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var request = {
+      "channel": channelId,
+      "text": messageText,
+       "user": userId,
+    
+    };
+
+    var result = await http.post(url,
+        body: json.encode(request), headers: requestHeader);
+
+    return result.body;
+  }
 }
+ 

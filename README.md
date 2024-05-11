@@ -17,7 +17,7 @@ Add to pubspec.yaml.
 ```yaml
 dependencies:
   ...
-  slacky: ^0.0.1
+  slacky: ^0.0.2
 ```
 
 

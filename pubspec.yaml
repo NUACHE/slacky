@@ -1,6 +1,6 @@
 name: slacky
-description: "A new Flutter package for accessing slack chat apis."
-version: 0.0.1
+description: "A new Flutter package for accessing slack apis. It currently implements only the chat apis. Newer apis will be added soon."
+version: 0.0.2
 homepage: https://github.com/NUACHE/slacky.git
 repository: https://github.com/NUACHE/slacky.git
 

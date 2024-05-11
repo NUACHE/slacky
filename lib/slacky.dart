@@ -38,7 +38,6 @@ class SlackNotifer {
   scheduledMessageList(
       {required String token,
 
-
       /// The channel of the scheduled messages
       String? channelId,
 
@@ -76,7 +75,7 @@ class SlackNotifer {
     return result.body;
   }
 
-  /// 
+  /// Send a message to channel
   postMessage(
       {required String messageText,
       required String token,
@@ -106,8 +105,7 @@ class SlackNotifer {
       {required String timeStamp,
       required String token,
       required String channelId,
-      bool? asUser
-      }) async {
+      bool? asUser}) async {
     //slack api
     var url = Uri.parse('https://slack.com/api/chat.delete');
 
@@ -120,7 +118,7 @@ class SlackNotifer {
     var request = {
       "channel": channelId,
       "ts": timeStamp,
-      if(asUser != null) "as_user": asUser
+      if (asUser != null) "as_user": asUser
     };
 
     var result = await http.post(url,
@@ -128,13 +126,13 @@ class SlackNotifer {
 
     return result.body;
   }
+
   /// Deletes a pending scheduled message from the queue.
   deleteScheduledMessage(
       {required String scheduleMessageId,
       required String token,
       required String channelId,
-      bool? asUser
-      }) async {
+      bool? asUser}) async {
     //slack api
     var url = Uri.parse('https://slack.com/api/chat.deleteScheduledMessage');
 
@@ -147,7 +145,7 @@ class SlackNotifer {
     var request = {
       "channel": channelId,
       "scheduled_message_id": scheduleMessageId,
-      if(asUser != null) "as_user": asUser
+      if (asUser != null) "as_user": asUser
     };
 
     var result = await http.post(url,
@@ -155,14 +153,13 @@ class SlackNotifer {
 
     return result.body;
   }
+
   updateMessage(
       {required String timeStamp,
       required String token,
       required String channelId,
       required String messageText,
-
-      bool? asUser
-      }) async {
+      bool? asUser}) async {
     //slack api
     var url = Uri.parse('https://slack.com/api/chat.update');
 
@@ -176,7 +173,7 @@ class SlackNotifer {
       "channel": channelId,
       "ts": timeStamp,
       "text": messageText,
-      if(asUser != null) "as_user": asUser
+      if (asUser != null) "as_user": asUser
     };
 
     var result = await http.post(url,
@@ -190,10 +187,10 @@ class SlackNotifer {
       {required String timeStamp,
       required String token,
       required String channelId,
-      bool? asUser
-      }) async {
+      bool? asUser}) async {
     //slack api
-    var url = Uri.parse('https://slack.com/api/chat.getPermalink?channel=$channelId&message_ts=$timeStamp');
+    var url = Uri.parse(
+        'https://slack.com/api/chat.getPermalink?channel=$channelId&message_ts=$timeStamp');
 
     //Makes request headers
     Map<String, String> requestHeader = {
@@ -201,14 +198,12 @@ class SlackNotifer {
       'Authorization': 'Bearer $token'
     };
 
-    var result = await http.get(url,
-       headers: requestHeader);
+    var result = await http.get(url, headers: requestHeader);
 
     return result.body;
   }
 
-
-   /// Share a me message into a channel.
+  /// Share a me message into a channel.
   meMessage(
       {required String messageText,
       required String token,
@@ -251,8 +246,7 @@ class SlackNotifer {
     var request = {
       "channel": channelId,
       "text": messageText,
-       "user": userId,
-    
+      "user": userId,
     };
 
     var result = await http.post(url,
@@ -260,8 +254,9 @@ class SlackNotifer {
 
     return result.body;
   }
+
   /// Provide custom unfurl behavior for user-posted URLs
-  /// 
+  ///
   /// Requires links:write scope
   unfurl(
       {required String messageText,
@@ -280,8 +275,7 @@ class SlackNotifer {
     var request = {
       "channel": channelId,
       "text": messageText,
-       "user": userId,
-    
+      "user": userId,
     };
 
     var result = await http.post(url,
@@ -290,4 +284,3 @@ class SlackNotifer {
     return result.body;
   }
 }
- 

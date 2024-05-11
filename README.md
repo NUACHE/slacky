@@ -34,6 +34,7 @@ import 'package:slacky/slacky.dart';
 
 ## Samples
 ```dart
+    final slacky = SlackNotifer();
     const token = 'xoxb-xxxxxxx-xxxxx-xxxxxxx';
     const channelId = 'channelId';
     var message = 'some message';
@@ -41,7 +42,7 @@ import 'package:slacky/slacky.dart';
 
 ```dart
     
-   var results = await slack.postMessage(
+   var results = await slacky.postMessage(
         token: token,
         channelId: channelId, 
         messageText: message,
@@ -49,3 +50,16 @@ import 'package:slacky/slacky.dart';
 
     print(results);
 ```
+
+| Scheme | Action |
+|:---|:---|
+| `slacky.postMessage`| Sends a message to a channel. |
+| `slacky.deleteMessage` | Deletes a message. |
+| `slacky.meMessage`  | Share a me message into a channel. |
+| `slacky.updateMessage` | Updates a message. |
+| `slacky.sendScheduledMessage` | Returns a list of scheduled messages. |
+| `slacky.postEphemeral` | Sends an ephemeral message to a user in a channel. |
+| `slacky.deleteScheduledMessage` | Deletes a pending scheduled message from the queue. |
+| `slacky.getPermalink` | Retrieve a permalink URL for a specific extant message. |
+| `slacky.scheduledMessageList` | Returns a list of scheduled messages. |
+| `slacky.unfurl` | Provide custom unfurl behavior for user-posted URLs. |
